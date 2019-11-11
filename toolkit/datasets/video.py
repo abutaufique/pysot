@@ -3,7 +3,7 @@ import cv2
 import re
 import numpy as np
 import json
-
+import pdb
 from glob import glob
 
 class Video(object):
@@ -17,7 +17,7 @@ class Video(object):
         self.pred_trajs = {}
         self.img_names = [os.path.join(root, x) for x in img_names]
         self.imgs = None
-
+        self.img_names = [images.replace('/color/', '/') if ('/color/' in images) else images for images in self.img_names]
         if load_img:
             self.imgs = [cv2.imread(x) for x in self.img_names]
             self.width = self.imgs[0].shape[1]

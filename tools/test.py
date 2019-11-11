@@ -7,7 +7,7 @@ from __future__ import unicode_literals
 
 import argparse
 import os
-
+import pdb
 import cv2
 import torch
 import numpy as np
@@ -71,6 +71,7 @@ def main():
             toc = 0
             pred_bboxes = []
             for idx, (img, gt_bbox) in enumerate(video):
+
                 if len(gt_bbox) == 4:
                     gt_bbox = [gt_bbox[0], gt_bbox[1],
                        gt_bbox[0], gt_bbox[1]+gt_bbox[3]-1,
@@ -166,13 +167,14 @@ def main():
                 if idx == 0:
                     cv2.destroyAllWindows()
                 if args.vis and idx > 0:
-                    gt_bbox = list(map(int, gt_bbox))
+                    #gt_bbox = list(map(int, gt_bbox))
                     pred_bbox = list(map(int, pred_bbox))
-                    cv2.rectangle(img, (gt_bbox[0], gt_bbox[1]),
-                                  (gt_bbox[0]+gt_bbox[2], gt_bbox[1]+gt_bbox[3]), (0, 255, 0), 3)
+                    #cv2.rectangle(img, (gt_bbox[0], gt_bbox[1]),
+                    #              (gt_bbox[0]+gt_bbox[2], gt_bbox[1]+gt_bbox[3]), (0, 255, 0), 3)
                     cv2.rectangle(img, (pred_bbox[0], pred_bbox[1]),
                                   (pred_bbox[0]+pred_bbox[2], pred_bbox[1]+pred_bbox[3]), (0, 255, 255), 3)
                     cv2.putText(img, str(idx), (40, 40), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
+                    cv2.putText(img, str(outputs['best_score']), (40, 70), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 255), 2)
                     cv2.imshow(video.name, img)
                     cv2.waitKey(1)
             toc /= cv2.getTickFrequency()

@@ -5,6 +5,7 @@ from .lasot import LaSOTDataset
 from .nfs import NFSDataset
 from .trackingnet import TrackingNetDataset
 from .got10k import GOT10kDataset
+from .vivid import VIVIDDataset
 
 class DatasetFactory(object):
     @staticmethod
@@ -36,6 +37,8 @@ class DatasetFactory(object):
             dataset = TrackingNetDataset(**kwargs)
         elif 'GOT-10k' == name:
             dataset = GOT10kDataset(**kwargs)
+        elif 'VIVID' == name:
+            dataset = VIVIDDataset(**kwargs)
         else:
             raise Exception("unknow dataset {}".format(kwargs['name']))
         return dataset
