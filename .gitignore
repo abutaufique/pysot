@@ -104,4 +104,9 @@ venv.bak/
 .mypy_cache/
 
 testing_dataset/*
-experiments
+venv304/
+pysot/lib64
+training_dataset/
+**logs/
+**results/
+*.pth

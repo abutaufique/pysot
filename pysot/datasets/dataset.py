@@ -248,7 +248,9 @@ class TrkDataset(Dataset):
         # get image
         template_image = cv2.imread(template[0])
         search_image = cv2.imread(search[0])
-
+        if (template_image is None) or (search_image is None):
+            raise ValueError(f'Template in {template[0]} not found')
+            raise ValueError(f'Search in {search[0]} not found')
         # get bounding box
         template_box = self._get_bbox(template_image, template[1])
         search_box = self._get_bbox(search_image, search[1])

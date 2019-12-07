@@ -41,7 +41,12 @@ parser.add_argument('--seed', type=int, default=123456,
                     help='random seed')
 parser.add_argument('--local_rank', type=int, default=0,
                     help='compulsory for pytorch launcer')
+parser.add_argument('--dist_training', type=bool, default=False,
+                    help='compulsory for pytorch launcer')
 args = parser.parse_args()
+
+if not args.dist_training:
+    os.environ['RANK'] = '0'
 
 
 def seed_torch(seed=0):
@@ -63,11 +68,17 @@ def build_data_loader():
     train_sampler = None
     if get_world_size() > 1:
         train_sampler = DistributedSampler(train_dataset)
-    train_loader = DataLoader(train_dataset,
-                              batch_size=cfg.TRAIN.BATCH_SIZE,
-                              num_workers=cfg.TRAIN.NUM_WORKERS,
-                              pin_memory=True,
-                              sampler=train_sampler)
+        train_loader = DataLoader(train_dataset,
+                                  batch_size=cfg.TRAIN.BATCH_SIZE,
+                                  num_workers=cfg.TRAIN.NUM_WORKERS,
+                                  pin_memory=True,
+                                  sampler=train_sampler)
+    else:
+        train_loader = DataLoader(train_dataset,
+                                  batch_size=cfg.TRAIN.BATCH_SIZE,
+                                  num_workers=cfg.TRAIN.NUM_WORKERS,
+                                  pin_memory=True
+                                  )
     return train_loader
 
 
